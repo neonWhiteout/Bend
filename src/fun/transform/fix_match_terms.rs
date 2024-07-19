@@ -42,8 +42,6 @@ impl Ctx<'_> {
   /// }
   /// ```
   pub fn fix_match_terms(&mut self) -> Result<(), Diagnostics> {
-    self.info.start_pass();
-
     for def in self.book.defs.values_mut() {
       for rule in def.rules.iter_mut() {
         let errs = rule.body.fix_match_terms(&self.book.ctrs, &self.book.adts);
@@ -239,7 +237,7 @@ fn fixed_match_arms<'a>(
         if let Some(var) = &rules[rule_idx].0 {
           new_body = Term::Use {
             nam: Some(var.clone()),
-            val: Box::new(rebuild_ctr(bnd, ctr, &adts [adt_nam].ctrs[&**ctr].fields)),
+            val: Box::new(rebuild_ctr(bnd, ctr, &adts[adt_nam].ctrs[&**ctr].fields)),
             nxt: Box::new(new_body),
           };
         }
